@@ -31,7 +31,7 @@ authRouter.post('/login', async (req, res) => {
 
         loginValidation(req);
 
-        const user = await UserModel.findOne({ emailId }).select('-emailId -password');
+        const user = await UserModel.findOne({ emailId });
 
         if (!user) {
             throw new Error("User not registered");
