@@ -16,7 +16,7 @@ authRouter.post('/signup', async (req, res) => {
         const user = await UserModel();
         const bcryptPass = await user.getBcryptPassword(password);
 
-        const newUser = new UserModel({ firstName, lastName, emailId, password: bcryptPass, age, gender});
+        const newUser = new UserModel({ firstName, lastName, emailId, password: bcryptPass, age, gender });
         await newUser.save();
         res.status(201).json({ message: "User registered successfully" });
     } catch (error) {
@@ -31,7 +31,7 @@ authRouter.post('/login', async (req, res) => {
 
         loginValidation(req);
 
-        const user = await UserModel.findOne({ emailId });
+        const user = await UserModel.findOne({ emailId }).select('-emailId -password');
 
         if (!user) {
             throw new Error("User not registered");
@@ -42,7 +42,7 @@ authRouter.post('/login', async (req, res) => {
         if (isPasswordValid) {
             const token = await user.getJWT();
             res.cookie("token", token, { expires: new Date(Date.now() + 24 * 3600000) });
-            return res.status(200).json({ message: "Logged in successfully" });
+            return res.status(200).json({ message: "Logged in successfully", data: user });
         } else {
             throw new Error("Wrong password please check");
         }
