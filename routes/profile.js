@@ -11,7 +11,7 @@ profileRouter.get('/profile/view', userAuth, async (req, res) => {
 
         res.status(200).json(user);
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        res.status(400).json({ message: error.message });
     }
 })
 
@@ -64,7 +64,7 @@ profileRouter.patch('/profile/edit', userAuth, async (req, res) => {
         });
 
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        res.status(400).json({ message: error.message });
     }
 })
 
@@ -80,7 +80,7 @@ profileRouter.patch('/profile/password', userAuth, async (req, res) => {
         const isPasswordValid = await UserModel.checkBcryptPassword(currentPassword);
 
         if (!isPasswordValid) {
-            return res.status(400).json({ error: "Current password is not valid." });
+            return res.status(400).json({ message: "Current password is not valid." });
         }        
 
         const bcryptPass = await user.getBcryptPassword(newPassword);
@@ -90,7 +90,7 @@ profileRouter.patch('/profile/password', userAuth, async (req, res) => {
         res.status(200).json({ message: "Password is successfully changed" });
 
     } catch (error) {
-        res.status(error.status || 500).json({ error: error.message });
+        res.status(error.status || 500).json({ message: error.message });
     }
 })
 

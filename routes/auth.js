@@ -11,16 +11,12 @@ authRouter.post('/signup', async (req, res) => {
 
         await isEmailAlreadyRegistered(req);
         isGettingData(req);
-        // signupValidation(req);
-
-        const user = await UserModel();
-        const bcryptPass = await user.getBcryptPassword(password);
-
-        const newUser = new UserModel({ firstName, lastName, emailId, password: bcryptPass, age, gender });
+        
+        const newUser = new UserModel({ firstName, lastName, emailId, password, age, gender });
         await newUser.save();
         res.status(201).json({ message: "User registered successfully" });
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        res.status(400).json({ message: error.message });
     }
 })
 
@@ -48,7 +44,7 @@ authRouter.post('/login', async (req, res) => {
         }
 
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        res.status(400).json({ message: error.message });
     }
 })
 

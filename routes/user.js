@@ -41,7 +41,7 @@ userRouter.get('/user/feed', userAuth, async (req, res) => {
         res.status(200).json({ message: "Feed data successfully fetched", allUser });
 
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        res.status(400).json({ message: error.message });
     }
 })
 
@@ -58,7 +58,7 @@ userRouter.get('/user/requests/received', userAuth, async (req, res) => {
 
         res.status(200).json({ message: "Requests fetched successfully", requestData });
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        res.status(400).json({ message: error.message });
     }
 })
 
@@ -88,7 +88,7 @@ userRouter.get('/user/connections', userAuth, async (req, res) => {
         res.status(200).json({ message: "Connections fetched successfully.", data });
 
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        res.status(400).json({ message: error.message });
     }
 })
 

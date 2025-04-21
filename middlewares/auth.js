@@ -10,7 +10,7 @@ const userAuth = async (req, res, next) => {
             throw new Error("Please try to again login");
         }
 
-        const { _id } = await jwt.verify(token, "DEV@TINDER$2885");
+        const { _id } = jwt.verify(token, "DEV@TINDER$2885");
         const user = await UserModel.findById(_id);
 
         if (!user) {
@@ -20,7 +20,7 @@ const userAuth = async (req, res, next) => {
         req.user = user;
         next();
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        res.status(400).json({ message: error.message });
     }
 }
 

@@ -33,7 +33,7 @@ connectionRequestRouter.post('/request/send/:status/:toUserId', userAuth, async 
             newRequest
         })
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        res.status(400).json({ message: error.message });
     }
 })
 
@@ -59,7 +59,7 @@ connectionRequestRouter.post('/request/review/:status/:requestId', userAuth, asy
         res.status(201).json({ message: "Connection request " + status, connectionRequest });
 
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        res.status(400).json({ message: error.message });
     }
 })
 

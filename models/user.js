@@ -40,10 +40,9 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
+        required: [true, "Password is required"],
         validate(value) {
-            if (!value) {
-                throw new Error("password is required");
-            } else if (!validator.isStrongPassword(value)) {
+            if (!validator.isStrongPassword(value)) {
                 throw new Error("Strong password is required (A-Z, a-z, 1-9, special character) must 8 digit");
             }
         }
@@ -101,15 +100,6 @@ userSchema.methods.getJWT = async function () {
     }
 }
 
-userSchema.methods.getBcryptPassword = async function (password) {
-    try {
-        const bcryptPass = await bcrypt.hash(password, 10);
-        return bcryptPass;
-    } catch (error) {
-        throw new Error("Error while hashing password");
-    }
-}
-
 userSchema.methods.checkBcryptPassword = async function (password) {
     try {
         const isPasswordValid = await bcrypt.compare(password, this.password);
@@ -118,6 +108,14 @@ userSchema.methods.checkBcryptPassword = async function (password) {
         throw new Error("Error while checking password");
     }
 }
+
+userSchema.pre("save", async function (next) {
+    if (this.isModified("password")) {
+      this.password = await bcrypt.hash(this.password, 10);
+    }
+    next();
+  });
+  
 
 const UserModel = mongoose.model("UserModel", userSchema);
 

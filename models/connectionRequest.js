@@ -22,7 +22,6 @@ const connectionRequestSchema = new mongoose.Schema({
 }, { timestamps: true })
 
 connectionRequestSchema.pre('save', function (next) {
-    
     const { fromUserId, toUserId } = this;
 
     if (fromUserId.toString() === toUserId.toString()) {
