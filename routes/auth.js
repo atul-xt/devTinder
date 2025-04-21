@@ -1,18 +1,21 @@
 const express = require('express');
 const { isEmailAlreadyRegistered, isGettingData } = require('../utils/helper');
-const { loginValidation } = require('../utils/validation');
+const { loginValidation, signupValidation } = require('../utils/validation');
 const UserModel = require('../models/user');
 
 const authRouter = express.Router();
 
 authRouter.post('/signup', async (req, res) => {
     try {
-        const { firstName, lastName, emailId, password, age, gender } = req.body;
+        const { firstName, lastName, emailId, password, age, gender, profileUrl, skills, about } = req.body;
+        const finalProfileUrl = profileUrl?.trim() === "" ? undefined : profileUrl;
 
         await isEmailAlreadyRegistered(req);
         isGettingData(req);
+        signupValidation(req);
+
         
-        const newUser = new UserModel({ firstName, lastName, emailId, password, age, gender });
+        const newUser = new UserModel({ firstName, lastName, emailId, password, age, gender, profileUrl: finalProfileUrl, skills, about });
         await newUser.save();
         res.status(201).json({ message: "User registered successfully" });
     } catch (error) {

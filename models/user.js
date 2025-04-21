@@ -50,7 +50,7 @@ const userSchema = new mongoose.Schema({
     age: {
         type: Number,
         validate(value) {
-            if (!(value >= 10 && value <= 80)) {
+            if (value && !(value >= 10 && value <= 80)) {
                 throw new Error("Age should be in 10 to 80");
             }
         }
@@ -58,7 +58,7 @@ const userSchema = new mongoose.Schema({
     gender: {
         type: String,
         validate(value) {
-            if (!["male", "female", "others"].includes(value)) {
+            if (value && !["male", "female", "others"].includes(value)) {
                 throw new Error("Invalid gender provided.")
             }
         }
@@ -67,7 +67,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "https://imgs.search.brave.com/2x3imi_133lqnirJKZE69J-WlAJ93mKjrrYoyzNw40g/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMtY3NlLmNhbnZh/LmNvbS9ibG9iLzE5/NDA4MzAvMTYwMHct/cWdDbmQ1c3djclEu/anBn",
         validate(value) {
-            if (!validator.isURL(value)) {
+            if (value && !validator.isURL(value)) {
                 throw new Error("Invalid photoUrl address");
             }
         }
@@ -75,7 +75,7 @@ const userSchema = new mongoose.Schema({
     about: {
         type: String,
         validate(value) {
-            if (!value.length <= 200) {
+            if (value && !value.length >= 200) {
                 throw new Error("About should be under 200 words")
             }
         }
@@ -83,7 +83,7 @@ const userSchema = new mongoose.Schema({
     skills: {
         type: [String],
         validate(value) {
-            if (!value.length > 10) {
+            if (value && !value.length > 10) {
                 throw new Error("Skills should be under 10")
             }
         }
