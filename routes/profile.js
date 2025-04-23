@@ -56,10 +56,10 @@ profileRouter.patch('/profile/edit', userAuth, async (req, res) => {
 
         Object.entries(updates).forEach(([key, value]) => user[key] = value);
 
-        await UserModel.save();
+        await user.save();
 
         res.status(200).json({
-            message: `${user.firstName}, your profile was updated successfully.`,
+            message: "Profile updated successfully.",
             data: user
         });
 
@@ -81,7 +81,7 @@ profileRouter.patch('/profile/password', userAuth, async (req, res) => {
 
         if (!isPasswordValid) {
             return res.status(400).json({ message: "Current password is not valid." });
-        }        
+        }
 
         const bcryptPass = await user.getBcryptPassword(newPassword);
         user.password = bcryptPass;
