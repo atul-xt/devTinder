@@ -14,7 +14,7 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-const allowedOrigins = ['http://localhost:5173', 'https://dev-tinder-web-gamma.vercel.app'];
+const allowedOrigins = ['http://localhost:5173', 'https://dev-tinder-web-gamma.vercel.app', 'http://172.20.10.2:5173'];
 
 app.use(cors({
     origin: (origin, callback) => {
@@ -32,38 +32,12 @@ app.use('/', profileRouter);
 app.use('/', connectionRequestRouter);
 app.use('/', userRouter);
 
-app.delete('/user/:userId', userAuth, async (req, res) => {
-    try {
-        const id = req.params?.userId;
-
-        const isAlreadyDeleted = await User.findById(id);
-        if (!isAlreadyDeleted) {
-            return res.status(400).json({ message: "User not found or already deleted" });
-        }
-        await User.findByIdAndDelete(id);
-        res.status(200).json({ message: "User deleted successfully" });
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-})
-
-app.get('/feed', userAuth, async (req, res) => {
-    try {
-        const feedData = await User.find({});
-        if (feedData.length === 0) {
-            return res.status(200).json({ message: "No users found", data: [] })
-        }
-        res.status(200).json({ data: feedData });
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-})
 
 connectDB()
     .then(() => {
         console.log("DB successfully connected...");
-        app.listen(3000, () => {
-            console.log("Server is running on the PORT NUM: 3000");
+        app.listen(5000, '0.0.0.0', () => {
+            console.log("Server is running on the PORT NUM: 5000");
         })
     })
     .catch((err) => {
