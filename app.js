@@ -12,7 +12,7 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-const allowedOrigins = ['http://localhost:5173', 'https://dev-tinder-web-gamma.vercel.app', 'http://16.171.232.113:3000'];
+const allowedOrigins = ['http://localhost:5173', 'https://dev-tinder-web-gamma.vercel.app', 'http://16.171.232.113'];
 
 app.use(cors({
     origin: (origin, callback) => {
