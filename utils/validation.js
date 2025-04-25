@@ -34,18 +34,6 @@ const loginValidation = (req) => {
     }
 }
 
-const profileEditValidation = (req) => {
-    const {firstName, lastName, age, gender, profileUrl, about, skills} = req.body;
-
-    if (!(firstName.length >= 3 && firstName.length <= 12)) {
-        throw new Error("firstName should be in 3 to 12 characters")
-    } else if (!(lastName.length >= 3 && lastName.length <= 12)) {
-        throw new Error("lastName should be in 3 to 12 characters")
-    } else if (!(age >= 10 && age <= 80)) {
-        throw new Error("Age should be in 10 to 80");
-    } 
-}
-
 module.exports = {
     signupValidation,
     loginValidation

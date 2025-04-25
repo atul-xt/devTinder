@@ -29,16 +29,15 @@ userRouter.get('/user/feed', userAuth, async (req, res) => {
             hideUsersFromFeed.add(toUserId.toString());
         });
 
-        const allUser = await UserModel.find({
-            $and: [
-                { _id: { $nin: Array.from(hideUsersFromFeed) } },
-                { _id: { $ne: _id } }
-            ]
-        }, USER_SAVE_DATA)
-            .skip(skip)
-            .limit(limit);
+        const allUsers = await UserModel.find({
+            _id: {
+                $nin: [...hideUsersFromFeed, _id] // exclude already connected and self
+            }
+        }, USER_SAVE_DATA);
 
-        res.status(200).json({ message: "Feed data successfully fetched", allUser });
+        const paginatedUsers = allUsers.slice(skip, skip + limit);
+
+        res.status(200).json({ message: "Feed data successfully fetched", allUser: paginatedUsers });
 
     } catch (error) {
         res.status(400).json({ message: error.message });
@@ -53,7 +52,7 @@ userRouter.get('/user/requests/received', userAuth, async (req, res) => {
             .populate('fromUserId', USER_SAVE_DATA);
 
         if (!requestData || requestData.length === 0) {
-            throw new Error("No requests found");
+            return res.status(404).json({ message: "No requests found" });
         }
 
         res.status(200).json({ message: "Requests fetched successfully", requestData });
@@ -65,7 +64,6 @@ userRouter.get('/user/requests/received', userAuth, async (req, res) => {
 userRouter.get('/user/connections', userAuth, async (req, res) => {
     try {
         const { _id } = req.user;
-
         const connections = await ConnectionRequestModel.find({
             $or: [
                 { toUserId: _id, status: 'accepted' },
@@ -75,7 +73,7 @@ userRouter.get('/user/connections', userAuth, async (req, res) => {
             .populate('toUserId', USER_SAVE_DATA);
 
         if (!connections || connections.length === 0) {
-            throw new Error("No connections found.");
+            return res.status(404).json({ message: "No connections found." });
         }
 
         const data = connections.map((row) => {

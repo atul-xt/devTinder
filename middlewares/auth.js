@@ -5,10 +5,10 @@ const UserModel = require('../models/user');
 const userAuth = async (req, res, next) => {
     try {
         const { token } = req.cookies;
+        
         if (!token) {
             return res.status(401).json({ message: "Please try to again login" });
         }
-
         const { _id } = jwt.verify(token, "DEV@TINDER$2885");
         const user = await UserModel.findById(_id);
 

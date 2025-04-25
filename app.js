@@ -1,8 +1,6 @@
 const express = require('express');
 const connectDB = require('./config/database');
-const User = require('./models/user');
 const cookieParser = require('cookie-parser');
-const { userAuth } = require('./middlewares/auth');
 const authRouter = require('./routes/auth');
 const profileRouter = require('./routes/profile');
 const connectionRequestRouter = require('./routes/requestConnection');
@@ -14,7 +12,7 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-const allowedOrigins = ['http://localhost:5173', 'https://dev-tinder-web-gamma.vercel.app', 'http://172.20.10.2:5173'];
+const allowedOrigins = ['http://localhost:5173', 'https://dev-tinder-web-gamma.vercel.app', 'http://16.171.232.113:3000'];
 
 app.use(cors({
     origin: (origin, callback) => {

@@ -75,7 +75,7 @@ const userSchema = new mongoose.Schema({
     about: {
         type: String,
         validate(value) {
-            if (value && !value.length >= 200) {
+            if (value && value.length > 200) {
                 throw new Error("About should be under 200 words")
             }
         }
@@ -83,7 +83,7 @@ const userSchema = new mongoose.Schema({
     skills: {
         type: [String],
         validate(value) {
-            if (value && !value.length > 10) {
+            if (value && value.length > 10) {
                 throw new Error("Skills should be under 10")
             }
         }
@@ -91,9 +91,9 @@ const userSchema = new mongoose.Schema({
 
 }, { timestamps: true })
 
-userSchema.methods.getJWT = async function () {
+userSchema.methods.getJWT = function () {
     try {
-        const token = await jwt.sign({ _id: this._id }, "DEV@TINDER$2885", { expiresIn: '1d' });
+        const token = jwt.sign({ _id: this._id }, "DEV@TINDER$2885", { expiresIn: '1d' });
         return token;
     } catch (error) {
         throw new Error("Error while getting jwt token");

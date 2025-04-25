@@ -1,6 +1,6 @@
 const express = require('express');
 const { userAuth } = require('../middlewares/auth');
-const { isGettingData, isUpdateAllowed, updationAllowed } = require('../utils/helper');
+const { updationAllowed } = require('../utils/helper');
 const UserModel = require('../models/user');
 
 const profileRouter = express.Router({ caseSensitive: true });
@@ -15,37 +15,6 @@ profileRouter.get('/profile/view', userAuth, async (req, res) => {
     }
 })
 
-// profileRouter.patch('/profile/edit', userAuth, async (req, res) => {
-//     try {
-//         const data = req.body;
-//         const { _id } = req.user;
-//         updationAllowed(req);
-
-//         const updatedUser = await User.findByIdAndUpdate(_id, data, { returnDocument: 'after', runValidators: true });
-//         if (!updatedUser) {
-//             throw new Error("User not found")
-//         }
-//         res.status(200).json({ message: `${req.user.firstName}, your edit is successful.`, data: updatedUser });
-//     } catch (error) {
-//         res.status(400).json({ error: error.message });
-//     }
-// })
-
-// profileRouter.patch('/profile/edit', userAuth, async (req, res) => {
-//     try {
-//         const newData = req.body;
-//         updationAllowed(req);
-
-//         const loggedInUser = req.user;
-//         Object.keys(newData).forEach((key) => loggedInUser[key] = newData[key]);
-
-//         if (!loggedInUser) throw new Error("user not found");
-//         await loggedInUser.save();
-//         res.send(loggedInUser)
-//     } catch (error) {
-//         res.status(400).json({ error: error.message });
-//     }
-// })
 
 profileRouter.patch('/profile/edit', userAuth, async (req, res) => {
     try {
