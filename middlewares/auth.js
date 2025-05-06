@@ -9,7 +9,7 @@ const userAuth = async (req, res, next) => {
         if (!token) {
             return res.status(401).json({ message: "Please try to again login" });
         }
-        const { _id } = jwt.verify(token, "DEV@TINDER$2885");
+        const { _id } = jwt.verify(token, process.env.JWT_SECRET);
         const user = await UserModel.findById(_id);
 
         if (!user) {

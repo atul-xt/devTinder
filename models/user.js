@@ -93,7 +93,7 @@ const userSchema = new mongoose.Schema({
 
 userSchema.methods.getJWT = function () {
     try {
-        const token = jwt.sign({ _id: this._id }, "DEV@TINDER$2885", { expiresIn: '1d' });
+        const token = jwt.sign({ _id: this._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
         return token;
     } catch (error) {
         throw new Error("Error while getting jwt token");
@@ -111,11 +111,11 @@ userSchema.methods.checkBcryptPassword = async function (password) {
 
 userSchema.pre("save", async function (next) {
     if (this.isModified("password")) {
-      this.password = await bcrypt.hash(this.password, 10);
+        this.password = await bcrypt.hash(this.password, 10);
     }
     next();
-  });
-  
+});
+
 
 const UserModel = mongoose.model("UserModel", userSchema);
 
